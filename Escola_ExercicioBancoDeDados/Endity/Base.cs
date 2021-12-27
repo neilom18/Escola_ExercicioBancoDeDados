@@ -9,5 +9,9 @@ namespace Escola_ExercicioBancoDeDados.Endity
         {
             Id = Guid.NewGuid();
         }
+        public Base(Guid id)
+        {
+            Id = id;
+        }
     }
 }

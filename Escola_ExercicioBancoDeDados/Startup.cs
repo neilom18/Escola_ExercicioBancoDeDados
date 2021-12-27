@@ -1,3 +1,6 @@
+using Escola_ExercicioBancoDeDados.Controllers;
+using Escola_ExercicioBancoDeDados.Repository;
+using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +31,19 @@ namespace Escola_ExercicioBancoDeDados
         {
 
             services.AddControllers();
+
+            services.AddSingleton<AlunoRepository>();
+            services.AddSingleton<CursoRepository>();
+            services.AddSingleton<MateriaRepository>();
+            services.AddSingleton<MateriaCursoRepository>();
+            services.AddSingleton<TurmaRepository>();
+
+            services.AddTransient<AlunoService>();
+            services.AddTransient<CursoService>();
+            services.AddTransient<MateriaService>();
+            services.AddTransient<TurmaService>();
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Escola_ExercicioBancoDeDados", Version = "v1" });

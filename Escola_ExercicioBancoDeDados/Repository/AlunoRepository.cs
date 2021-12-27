@@ -27,7 +27,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
                     VALUES(:Nome, :Idade, :Turma_Id, :Id);", conn
                 );
 
-            cmd.Parameters.Add(new OracleParameters("NOME", aluno.Nome));
+            cmd.Parameters.Add(new OracleParameter("NOME", aluno.Nome));
             cmd.Parameters.Add(new OracleParameter("IDADE", aluno.Idade));
             cmd.Parameters.Add(new OracleParameter("TURMA_ID", aluno.Turma_id));
             cmd.Parameters.Add(new OracleParameter("ID", aluno.Id.ToString()));
@@ -46,7 +46,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
             {
                 while (reader.Read())
                 {
-                    new OracleCommand("slect Nome from materia where");
+                    
                    
                 }
             }

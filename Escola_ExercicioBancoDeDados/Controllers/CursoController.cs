@@ -7,28 +7,28 @@ using System;
 namespace Escola_ExercicioBancoDeDados.Controllers
 {
     [ApiController, Route("[controller]")]
-    public class AlunoController : ControllerBase
+    public class CursoController : ControllerBase
     {
-        private readonly AlunoService _service;
-        public AlunoController(AlunoService service)
+        private readonly CursoService _service;
+
+        public CursoController(CursoService service)
         {
             _service = service;
         }
 
-        /*[HttpPost]
-        public IActionResult PostAluno(AlunoDTO alunoDTO)
+        [HttpPost]
+        public IActionResult PostCurso(CursoDTO curso)
         {
-            alunoDTO.Validar();
-            if (!alunoDTO.Valido) return BadRequest(alunoDTO.GetErrors());
-            try
+            curso.Validar();
+            if (!curso.Valido) return BadRequest(curso.GetErrors());
+            try 
             {
-                _service.RegistraAluno(alunoDTO);
-                return Ok();
+                return Ok(_service.RegistraCurso(curso));
             }
-            catch(Exception ex)
+            catch(Exception ex) 
             {
                 return BadRequest(new ExceptionResult { Success = false, Message = ex.Message});
             }
-        }*/
+        }
     }
 }
