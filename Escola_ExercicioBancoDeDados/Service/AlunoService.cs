@@ -9,32 +9,28 @@ namespace Escola_ExercicioBancoDeDados.Service
     public class AlunoService
     {
         private readonly AlunoRepository _repository;
-        private readonly MateriaRepository _materiaRepository;
-        public AlunoService(AlunoRepository repository, MateriaRepository materiaRepository)
+        private readonly TurmaRepository _turmaRepository;
+        private readonly CursoRepository _cursoRepository;
+        public AlunoService(AlunoRepository repository, TurmaRepository turmaRepository, CursoRepository cursoRepository)
         {
             _repository = repository;
-            _materiaRepository = materiaRepository;
+            _turmaRepository = turmaRepository;
+            _cursoRepository = cursoRepository;
         }
-        
-        /*public void RegistraAluno(AlunoDTO aluno)
-        {
-            *//*aluno.Validar();
-            if(!aluno.Valido) return aluno.GetErrors();*//*
-            List<Materia> materias = new List<Materia>();
-            foreach (var id in aluno.Materias_id)
-                materias.Add(_materiaRepository.SelectById(id));
 
-            if(materias.Count > 3 || materias.Count < 1)
-                throw new Exception("Precisa se cadastrar no mínimo em 1 matéria e no máximo em 3");
-            
-            _repository.Insert(new Aluno
+        public Aluno RegistraAluno(AlunoDTO alunoDTO)
+        {
+            var curso_id = _turmaRepository.GetCursoId(alunoDTO.Turma_id);
+            var curso = _cursoRepository.SelectById(curso_id);
+            var turma = new Turma(curso: curso, id:alunoDTO.Turma_id);
+            var aluno = new Aluno
                 (
-                nome: aluno.Nome,
-                materias: materias,
-                idade: aluno.Idade,
-                turma_id: aluno.Turma_id
-                ));
-            
-        }*/
+                nome: alunoDTO.Nome,
+                idade: alunoDTO.Idade,
+                turma: turma
+                );
+            _repository.Insert(aluno);
+            return aluno;
+        }
     }
 }

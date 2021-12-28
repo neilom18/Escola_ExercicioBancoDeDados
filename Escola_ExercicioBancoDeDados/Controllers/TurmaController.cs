@@ -14,12 +14,19 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             _service = service;
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult PostTurma(TurmaDTO turma)
         {
             turma.Validar();
             if (!turma.Valido) return BadRequest(turma.GetErrors());
-            return Ok(_service.RegistraTurma(turma));
-        }*/
+            try
+            {
+                return Ok(_service.RegistraTurma(turma));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(new ExceptionResult {  Success = false, Message = ex.Message});
+            }
+        }
     }
 }

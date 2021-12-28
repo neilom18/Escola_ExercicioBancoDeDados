@@ -7,7 +7,6 @@ namespace Escola_ExercicioBancoDeDados.DTO
     {
         public Guid Professor_id { get; set; }
         public Guid Turma_id { get; set; }
-        public List<Guid> Materias_id { get; set; }
         public string Nome { get; set; }
         public int Idade { get; set; }
 
@@ -18,15 +17,21 @@ namespace Escola_ExercicioBancoDeDados.DTO
 
         public override void Validar()
         {
+            Valido = true;
             if(Idade <= 0)
             {
                 Valido = false;
                 _errors.Add(nameof(Idade), "Idade não pode ser nula ou negativa");
             }
-            if(Materias_id == null || Materias_id.Count > 3)
+            if (string.IsNullOrWhiteSpace(Nome))
             {
                 Valido = false;
-                _errors.Add(nameof(Materias_id), "O Aluno precisa conter de 1 a 3 matérias");
+                _errors.Add(nameof(Nome), "O nome precisa ser informado!");
+            }
+            if(Turma_id == Guid.Empty)
+            {
+                Valido = false;
+                _errors.Add(nameof(Turma_id), "A turma precisa ser informada");
             }
         }
     }

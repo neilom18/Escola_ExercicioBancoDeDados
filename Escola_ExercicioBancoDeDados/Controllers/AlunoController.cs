@@ -15,20 +15,19 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             _service = service;
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult PostAluno(AlunoDTO alunoDTO)
         {
             alunoDTO.Validar();
             if (!alunoDTO.Valido) return BadRequest(alunoDTO.GetErrors());
             try
             {
-                _service.RegistraAluno(alunoDTO);
-                return Ok();
+                return Ok(_service.RegistraAluno(alunoDTO));
             }
             catch(Exception ex)
             {
                 return BadRequest(new ExceptionResult { Success = false, Message = ex.Message});
             }
-        }*/
+        }
     }
 }

@@ -17,5 +17,6 @@ namespace Escola_ExercicioBancoDeDados.Endity
         }
         public string Nome { get; private set; }
         public string Descricao { get;private set; }
+
     }
 }

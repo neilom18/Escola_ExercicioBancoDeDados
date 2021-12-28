@@ -5,6 +5,11 @@ namespace Escola_ExercicioBancoDeDados.Endity
 {
     public class Curso : Base
     {
+        public Curso(string nome, Guid id) : base(id)
+        {
+            Nome = nome;
+        }
+
         public Curso(List<Materia> materias, string nome)
         {
             Materias = materias;
@@ -13,5 +18,7 @@ namespace Escola_ExercicioBancoDeDados.Endity
 
         public List<Materia> Materias { get; private set; }
         public string Nome { get; private set; }
+
+        public void AddMaterias(List<Materia> materias) => Materias = materias;
     }
 }

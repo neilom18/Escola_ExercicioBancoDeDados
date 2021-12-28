@@ -65,6 +65,11 @@ namespace Escola_ExercicioBancoDeDados.Service
                 transaction.Rollback();
                 throw;
             }
+            finally
+            {
+                conn.Close();
+                command.Dispose();
+            }
 
             return curso;
         }
