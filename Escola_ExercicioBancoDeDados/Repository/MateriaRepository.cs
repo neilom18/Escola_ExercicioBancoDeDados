@@ -28,7 +28,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
                     (
                        @"INSERT INTO APPACADEMY.MATERIA
                     (NOME, DESCRICAO, ID)
-                    VALUES(:Nome, :Descricao, :Id);", conn
+                    VALUES(:Nome, :Descricao, :Id)", conn
                     );
 
                 cmd.Parameters.Add("Nome", materia.Nome);
@@ -54,18 +54,18 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 (
                     @"SELECT * FROM MATERIA WHERE ID = :Id", conn
                 );
-            
-            cmd.Parameters.Add("Id", id);
+
+            cmd.Parameters.Add("Id", id.ToString());
 
             using (var reader = cmd.ExecuteReader())
             {
+                reader.Read();
                 var materia = new Materia
                     (
                     nome: reader["nome"].ToString(),
                     descricao: reader["descricao"].ToString(),
-                    id: Guid.Parse(reader["Id"].ToString())
+                    id: Guid.Parse(reader["id"].ToString())
                     );
-
                 return materia;
             }
         }
