@@ -21,17 +21,21 @@ namespace Escola_ExercicioBancoDeDados.DTO
                 Valido = false;
                 _errors.Add(nameof(Nome), "O nome precisa ser informado");
             }
-            foreach(var materia in Materias_id)
+            if(Materias_id is not null)
             {
-                if (materia == Guid.Empty)
+                foreach(var materia in Materias_id)
                 {
-                    Valido = false;
-                    _errors.Add(nameof(Materias_id), "Todos os ids precisam ser válidos");
-                }
-                if(materia.ToString().Length != 36) 
-                {
-                    Valido = false;
-                    _errors.Add(nameof(Materias_id), "Todos os ids precisam estar no formato GUID");
+                    if (materia == Guid.Empty)
+                    {
+                        Valido = false;
+                        _errors.Add(nameof(Materias_id), "Todos os ids precisam ser válidos");
+                    }
+                    if(materia.ToString().Length != 36) 
+                    {
+                        Valido = false;
+                        _errors.Add(nameof(Materias_id), "Todos os ids precisam estar no formato GUID");
+                    }
+
                 }
             }
         }

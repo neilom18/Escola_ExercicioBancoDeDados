@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;
+using System.Collections.Generic;
 
 namespace Escola_ExercicioBancoDeDados.Repository
 {
@@ -42,27 +43,72 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 throw new Exception("Ocorreu um erro ao tentar adicionar a turma");
             }
         }
-        
+
         public Guid GetCursoId(Guid id)
         {
-            using var conn = new OracleConnection(ConnectionStting);
-
-            conn.Open();
-
-            using (var cmd = new OracleCommand
-                (
-                    @"SELECT * FROM MATERIA WHERE ID = :Id", conn
-                ))
+            try
             {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using (var cmd = new OracleCommand
+                    (
+                        @"SELECT CURSO_ID FROM TURMA WHERE ID = :Id", conn
+                    ))
+                {
+
+                    cmd.Parameters.Add("Id", id.ToString());
+                    Guid Curso_Id = Guid.Empty;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Curso_Id = Guid.Parse(reader["curso_id"].ToString());
+                        }
+                        return Curso_Id;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Ocorreu um erro ao tentar buscar o id do curso");
+            }
+        }
+
+        public List<Aluno> GetAlunos(Guid id)
+        {
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using var cmd = new OracleCommand
+                    (
+                        @"SELECT * FROM ALUNO a WHERE ID IN (SELECT ID FROM TURMA WHERE :Id = a.TURMA_ID)", conn
+                    );
 
                 cmd.Parameters.Add("Id", id.ToString());
-
+                var alunos = new List<Aluno>();
                 using (var reader = cmd.ExecuteReader())
                 {
-                    reader.Read();
-                    Guid Curso_Id = Guid.Parse(reader["curso_id"].ToString());
-                    return Curso_Id;
+                    while (reader.Read())
+                    {
+                        var aluno = new Aluno(
+                            nome: reader["nome"].ToString(),
+                            idade: int.Parse(reader["idade"].ToString()),
+                            id: Guid.Parse(reader["id"].ToString()));
+
+                        alunos.Add(aluno);
+                    }
                 }
+                return alunos;
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Ocorreu um erro ao buscar os alunos de uma turma");
             }
         }
     }

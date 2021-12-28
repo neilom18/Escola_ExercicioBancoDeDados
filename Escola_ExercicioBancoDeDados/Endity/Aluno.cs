@@ -5,6 +5,12 @@ namespace Escola_ExercicioBancoDeDados.Endity
 {
     public class Aluno : Base
     {
+        public Aluno(string nome, int idade, Guid id) : base(id)
+        {
+            Nome = nome;
+            Idade = idade;
+        }
+
         public Aluno(Turma turma, string nome, int idade)
         {
             Turma = turma;

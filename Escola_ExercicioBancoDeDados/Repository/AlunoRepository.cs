@@ -24,7 +24,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 (
                     @"INSERT INTO APPACADEMY.ALUNO
                     (NOME, IDADE, TURMA_ID, ID)
-                    VALUES(:Nome, :Idade, :Turma_Id, :Id);", conn
+                    VALUES(:Nome, :Idade, :Turma_Id, :Id)", conn
                 );
 
             cmd.Parameters.Add(new OracleParameter("NOME", aluno.Nome));

@@ -3,6 +3,7 @@ using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Escola_ExercicioBancoDeDados.Service
 {
@@ -22,7 +23,16 @@ namespace Escola_ExercicioBancoDeDados.Service
         {
             var curso_id = _turmaRepository.GetCursoId(alunoDTO.Turma_id);
             var curso = _cursoRepository.SelectById(curso_id);
-            var turma = new Turma(curso: curso, id:alunoDTO.Turma_id);
+            var alunos = _turmaRepository.GetAlunos(curso_id);
+            Turma turma;
+            if(alunos.Any())
+            {
+                turma = new Turma(curso: curso, id: alunoDTO.Turma_id, alunos: alunos );
+            }
+            else
+            {
+                turma = new Turma(curso: curso, id:alunoDTO.Turma_id);
+            }
             var aluno = new Aluno
                 (
                 nome: alunoDTO.Nome,

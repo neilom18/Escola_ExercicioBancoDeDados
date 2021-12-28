@@ -5,7 +5,6 @@ namespace Escola_ExercicioBancoDeDados.DTO
 {
     public class AlunoDTO : Validator
     {
-        public Guid Professor_id { get; set; }
         public Guid Turma_id { get; set; }
         public string Nome { get; set; }
         public int Idade { get; set; }
