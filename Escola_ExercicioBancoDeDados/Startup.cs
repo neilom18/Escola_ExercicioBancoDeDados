@@ -37,12 +37,13 @@ namespace Escola_ExercicioBancoDeDados
             services.AddSingleton<MateriaRepository>();
             services.AddSingleton<MateriaCursoRepository>();
             services.AddSingleton<TurmaRepository>();
+            services.AddSingleton<ProfessorRepository>();
 
             services.AddTransient<AlunoService>();
             services.AddTransient<CursoService>();
             services.AddTransient<MateriaService>();
             services.AddTransient<TurmaService>();
-
+            services.AddTransient<ProfessorService>();
 
             services.AddSwaggerGen(c =>
             {

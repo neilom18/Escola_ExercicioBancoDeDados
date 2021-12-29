@@ -15,8 +15,23 @@ namespace Escola_ExercicioBancoDeDados.Endity
             Nome = nome;
             Descricao = descricao;
         }
+
+        public Materia(string nome, string descricao, Professor professor)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Professor = professor;
+        }
+
+        public Materia(string nome, string descricao, Professor professor, Guid id) : base(id)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Professor = professor;
+        }
+
         public string Nome { get; private set; }
         public string Descricao { get;private set; }
-
+        public Professor Professor { get; private set; }
     }
 }

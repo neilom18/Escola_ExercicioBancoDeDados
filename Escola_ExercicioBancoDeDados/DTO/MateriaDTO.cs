@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Escola_ExercicioBancoDeDados.DTO
 {
@@ -7,7 +8,7 @@ namespace Escola_ExercicioBancoDeDados.DTO
 
         public string Nome { get; set; }
         public string Descricao { get; set; }
-
+        public Guid Professor_id { get; set; }
         public override Dictionary<string, string> GetErrors()
         {
             return _errors;

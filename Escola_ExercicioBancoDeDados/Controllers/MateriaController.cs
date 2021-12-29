@@ -16,7 +16,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostMateria(MateriaDTO materiaDTO)
+        public IActionResult Post(MateriaDTO materiaDTO)
         {
             materiaDTO.Validar();
             if (!materiaDTO.Valido) return BadRequest(materiaDTO.GetErrors());
@@ -26,7 +26,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ExceptionResult { Success = false, Message = ex.Message});
+                return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
     }

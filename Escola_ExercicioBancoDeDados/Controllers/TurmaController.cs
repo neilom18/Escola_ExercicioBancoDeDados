@@ -15,7 +15,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostTurma(TurmaDTO turma)
+        public IActionResult Post(TurmaDTO turma)
         {
             turma.Validar();
             if (!turma.Valido) return BadRequest(turma.GetErrors());
@@ -25,7 +25,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             }
             catch (System.Exception ex)
             {
-                return BadRequest(new ExceptionResult {  Success = false, Message = ex.Message});
+                return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
     }

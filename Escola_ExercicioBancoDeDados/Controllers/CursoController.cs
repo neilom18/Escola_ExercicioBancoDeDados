@@ -17,7 +17,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostCurso(CursoDTO curso)
+        public IActionResult Post(CursoDTO curso)
         {
             curso.Validar();
             if (!curso.Valido) return BadRequest(curso.GetErrors());
@@ -27,7 +27,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             }
             catch(Exception ex) 
             {
-                return BadRequest(new ExceptionResult { Success = false, Message = ex.Message});
+                return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
     }

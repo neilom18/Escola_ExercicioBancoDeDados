@@ -86,7 +86,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
 
                 using var cmd = new OracleCommand
                     (
-                        @"SELECT * FROM ALUNO a WHERE ID IN (SELECT ID FROM TURMA WHERE :Id = a.TURMA_ID)", conn
+                        @"SELECT * FROM ALUNO a WHERE TURMA_ID IN (SELECT ID FROM TURMA WHERE ID = :Id)", conn
                     );
 
                 cmd.Parameters.Add("Id", id.ToString());

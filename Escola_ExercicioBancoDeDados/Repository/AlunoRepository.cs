@@ -16,23 +16,30 @@ namespace Escola_ExercicioBancoDeDados.Repository
 
         public void Insert(Aluno aluno)
         {
-            using var conn = new OracleConnection(ConnectionStting);
-            
-            conn.Open();
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
 
-            using var cmd = new OracleCommand
-                (
-                    @"INSERT INTO APPACADEMY.ALUNO
+                conn.Open();
+
+                using var cmd = new OracleCommand
+                    (
+                        @"INSERT INTO APPACADEMY.ALUNO
                     (NOME, IDADE, TURMA_ID, ID)
                     VALUES(:Nome, :Idade, :Turma_Id, :Id)", conn
-                );
+                    );
 
-            cmd.Parameters.Add(new OracleParameter("NOME", aluno.Nome));
-            cmd.Parameters.Add(new OracleParameter("IDADE", aluno.Idade));
-            cmd.Parameters.Add(new OracleParameter("TURMA_ID", aluno.Turma.Id.ToString()));
-            cmd.Parameters.Add(new OracleParameter("ID", aluno.Id.ToString()));
+                cmd.Parameters.Add(new OracleParameter("NOME", aluno.Nome));
+                cmd.Parameters.Add(new OracleParameter("IDADE", aluno.Idade));
+                cmd.Parameters.Add(new OracleParameter("TURMA_ID", aluno.Turma.Id.ToString()));
+                cmd.Parameters.Add(new OracleParameter("ID", aluno.Id.ToString()));
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro ao tentar adicionar o aluno");
+            }
         }
 
         public void SelectById(Guid id)

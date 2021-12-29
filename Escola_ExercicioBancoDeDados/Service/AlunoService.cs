@@ -23,7 +23,7 @@ namespace Escola_ExercicioBancoDeDados.Service
         {
             var curso_id = _turmaRepository.GetCursoId(alunoDTO.Turma_id);
             var curso = _cursoRepository.SelectById(curso_id);
-            var alunos = _turmaRepository.GetAlunos(curso_id);
+            var alunos = _turmaRepository.GetAlunos(alunoDTO.Turma_id);
             Turma turma;
             if(alunos.Any())
             {
@@ -39,6 +39,7 @@ namespace Escola_ExercicioBancoDeDados.Service
                 idade: alunoDTO.Idade,
                 turma: turma
                 );
+            aluno.Turma.Alunos.Add(new Aluno(aluno.Nome, aluno.Idade, aluno.Id));
             _repository.Insert(aluno);
             return aluno;
         }

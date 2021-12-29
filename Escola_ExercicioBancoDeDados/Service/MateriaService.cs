@@ -7,15 +7,22 @@ namespace Escola_ExercicioBancoDeDados.Service
     public class MateriaService
     {
         public readonly MateriaRepository _repository;
-        public MateriaService(MateriaRepository repository)
+        public readonly ProfessorRepository _professorRepository;
+        public MateriaService(MateriaRepository repository, ProfessorRepository professorRepository)
         {
             _repository = repository;
+            _professorRepository = professorRepository;
         }
 
         public Materia RegistraMateria(MateriaDTO materiaDTO)
         {
-            
-            var materia = new Materia(materiaDTO.Nome, materiaDTO.Descricao);
+            var professor = _professorRepository.SelectById(materiaDTO.Professor_id);
+            Materia materia;
+            if (professor is null)
+                throw new System.Exception("Não foi possivel encontrar esse professor");
+            else
+                materia = new Materia(nome: materiaDTO.Nome, descricao: materiaDTO.Descricao, professor: professor);
+                
             return _repository.Insert(materia);
         }
     }

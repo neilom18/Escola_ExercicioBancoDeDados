@@ -2,7 +2,7 @@
 {
     public class ExceptionResult
     {
-        public bool Success { get; set; }
+        public bool Success { get;private set; } = false;
         public string Message { get; set; }
     }
 }

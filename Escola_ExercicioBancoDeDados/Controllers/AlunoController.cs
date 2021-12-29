@@ -26,7 +26,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(new ExceptionResult { Success = false, Message = ex.Message});
+                return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
     }
