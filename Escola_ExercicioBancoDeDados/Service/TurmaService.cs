@@ -1,6 +1,7 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO;
 using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
+using System;
 
 namespace Escola_ExercicioBancoDeDados.Service
 {
@@ -19,6 +20,12 @@ namespace Escola_ExercicioBancoDeDados.Service
         {
             var curso = _cursoRepository.SelectById(turmaDTO.Curso_id);
             return _repository.Insert(new Turma(curso: curso));
+        }
+
+        public void Delete(Guid id)
+        {
+            var result = _repository.Delete(id);
+            if (result == 0) throw new Exception("Não foi possível encontrar a turma");
         }
     }
 }

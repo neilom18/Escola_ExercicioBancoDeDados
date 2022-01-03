@@ -12,16 +12,22 @@ namespace Escola_ExercicioBancoDeDados.Service
         private readonly AlunoRepository _repository;
         private readonly TurmaRepository _turmaRepository;
         private readonly CursoRepository _cursoRepository;
-        public AlunoService(AlunoRepository repository, TurmaRepository turmaRepository, CursoRepository cursoRepository)
+        private readonly MateriaCursoRepository _materiaCursoRepository;
+        private readonly AlunoMateriaRepository _alunoMateriaRepository;
+        public AlunoService(AlunoRepository repository, TurmaRepository turmaRepository, CursoRepository cursoRepository, MateriaCursoRepository materiaCursoRepository, AlunoMateriaRepository alunoMateriaRepository)
         {
             _repository = repository;
             _turmaRepository = turmaRepository;
             _cursoRepository = cursoRepository;
+            _materiaCursoRepository = materiaCursoRepository;
+            _alunoMateriaRepository = alunoMateriaRepository;
         }
 
         public Aluno RegistraAluno(AlunoDTO alunoDTO)
         {
             var curso_id = _turmaRepository.GetCursoId(alunoDTO.Turma_id);
+            if (curso_id == Guid.Empty)
+                throw new Exception("O curso buscado não foi encontrado");
             var curso = _cursoRepository.SelectById(curso_id);
             var alunos = _turmaRepository.GetAlunos(alunoDTO.Turma_id);
             Turma turma;
@@ -42,6 +48,28 @@ namespace Escola_ExercicioBancoDeDados.Service
             aluno.Turma.Alunos.Add(new Aluno(aluno.Nome, aluno.Idade, aluno.Id));
             _repository.Insert(aluno);
             return aluno;
+        }
+
+        public Aluno UpdateMaterias(UpdateAlunoDTO updateAlunoDTO)
+        {
+            var aluno = _repository.SelectById(updateAlunoDTO.Aluno_id);
+            List<Materia> materias = new List<Materia>();
+            foreach (var id in updateAlunoDTO.Materias_id)
+            {
+                var m = _materiaCursoRepository.SelectById(curso_id: aluno.Turma.Curso.Id, materia_id: id);
+                if (m is null) throw new Exception("Não foi possivel encontrar uma matéria!");
+                materias.Add(m);
+            }
+            aluno.SetMaterias(materias);
+
+            _alunoMateriaRepository.Insert(aluno);
+            return aluno;
+        }
+
+        public void Delete(Guid id)
+        {
+            var result = _repository.Delete(id);
+            if (result == 0) throw new Exception("Não foi encontrado o aluno");
         }
     }
 }

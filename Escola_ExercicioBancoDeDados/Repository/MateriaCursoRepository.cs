@@ -68,5 +68,61 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 throw new Exception("Houve um erro ao adicionar a matéria ao curso");
             }
         }
+
+        public Materia SelectById(Guid curso_id, Guid materia_id)
+        {
+            try 
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using (var cmd = new OracleCommand
+                    (
+                    @"SELECT m.ID AS materia_id,
+                    m.NOME AS materia_nome,
+                    m.DESCRICAO AS descricao,
+                    p.ID AS professor_id,
+                    p.NOME AS professor_nome,
+                    p.IDADE AS idade
+                    FROM MATERIA m
+                    LEFT JOIN MATERIA_CURSO mc 
+                    ON mc.MATERIA_ID = m.ID
+                    LEFT JOIN PROFESSOR p 
+                    ON p.ID = m.PROFESSOR_ID
+                    WHERE mc.MATERIA_ID = :Materia_id AND mc.CURSO_ID = :Curso_id", conn
+                    ))
+                {
+                    cmd.BindByName = true;
+                    cmd.Parameters.Add("materia_id", materia_id.ToString());
+                    cmd.Parameters.Add("Curso_id", curso_id.ToString());
+
+                    Materia materia = null;
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            materia = new Materia
+                                (
+                                nome: reader["materia_nome"].ToString(),
+                                descricao: reader["descricao"].ToString(),
+                                id: Guid.Parse(reader["materia_id"].ToString()),
+                                professor: new Professor(
+                                    id: Guid.Parse(reader["professor_id"].ToString()),
+                                    nome: reader["professor_nome"].ToString(),
+                                    idade: int.Parse(reader["idade"].ToString())
+                                    )
+                                );
+                        }
+                        return materia;
+                    }
+                }
+            }
+            catch 
+            {
+                throw new Exception("Houve um erro ao buscar a materia de um curso");
+            }
+        }
     }
 }

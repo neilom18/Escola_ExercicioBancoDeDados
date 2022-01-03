@@ -37,40 +37,31 @@ namespace Escola_ExercicioBancoDeDados.Service
                 materias.Add(materia);
             }
             if (materias.Count != cursoDTO.Materias_id.Count) throw new System.Exception("Alguma matéria não foi encontrada");
-            // Estancia o curso e abre a conexão.
+            // Estancia o Curso e abre a conexão.
             var curso = new Curso(materias: materias, nome: cursoDTO.Nome);
-            var conn = new OracleConnection(ConnectionStting);
-            conn.Open();
-            // Create a local transaction
-            OracleCommand command = conn.CreateCommand();
-            OracleTransaction transaction = conn.BeginTransaction();
-            command.Transaction = transaction;
 
             try
             {
-                command.Connection = conn;
-                command.CommandText = @"INSERT INTO APPACADEMY.CURSO
+                using var conn = new OracleConnection(ConnectionStting);
+                conn.Open();
+                // Create a local transaction
+                OracleTransaction transaction = conn.BeginTransaction();
+                var command = new OracleCommand(@"INSERT INTO APPACADEMY.CURSO
                                             (NOME, ID)
-                                            VALUES(:Nome, :Id)";
+                                            VALUES(:Nome, :Id)", conn);
+                command.Transaction = transaction;
                 _repository.Insert(curso, command);
-                command.Parameters.Clear();
-                command.CommandText = @"INSERT INTO APPACADEMY.MATERIA_CURSO
+                var command2 = new OracleCommand(@"INSERT INTO APPACADEMY.MATERIA_CURSO
                                             (ID, MATERIA_ID, CURSO_ID)
-                                            VALUES(:Id, :Materia_id, :Curso_id)";
-                _materiaCursoRepository.Insert(curso, command);
+                                            VALUES(:Id, :Materia_id, :Curso_id)", conn);
+                command2.Transaction = transaction;
+                _materiaCursoRepository.Insert(curso, command2);
                 transaction.Commit();
             }
             catch (Exception)
             {
-                transaction.Rollback();
                 throw;
             }
-            finally
-            {
-                conn.Close();
-                command.Dispose();
-            }
-
             return curso;
         }
     }

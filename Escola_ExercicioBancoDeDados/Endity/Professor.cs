@@ -5,6 +5,7 @@ namespace Escola_ExercicioBancoDeDados.Endity
 {
     public class Professor : Base 
     {
+        public Professor(Guid id) : base(id){}
         public Professor(string nome, int idade)
         {
             Nome = nome;

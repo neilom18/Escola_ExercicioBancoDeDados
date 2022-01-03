@@ -111,5 +111,46 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 throw new Exception("Ocorreu um erro ao buscar os alunos de uma turma");
             }
         }
+
+        public int Delete(Guid id)
+        {
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                OracleTransaction transaction = conn.BeginTransaction();
+                using (var cmd = new OracleCommand
+                    (
+                    @"UPDATE APPACADEMY.ALUNO a
+                SET TURMA_ID = NULL
+                WHERE a.TURMA_ID = :Id", conn
+                    ))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.Add("Id", id.ToString());
+
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = new OracleCommand
+                    (
+                    @"DELETE FROM TURMA WHERE ID = :Id", conn
+                    ))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.Add("Id", id.ToString());
+
+                    var n = cmd.ExecuteNonQuery();
+                    
+                    transaction.Commit();
+                    return n;
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro ao tentar deletar a turma");
+            }
+        }
     }
 }

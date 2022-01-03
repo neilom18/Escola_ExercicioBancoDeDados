@@ -2,6 +2,7 @@
 using Escola_ExercicioBancoDeDados.DTO.Result;
 using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Escola_ExercicioBancoDeDados.Controllers
 {
@@ -23,7 +24,20 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             {
                 return Ok(_service.RegistraTurma(turma));
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message});
+            }
+        }
+        [HttpDelete, Route("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }

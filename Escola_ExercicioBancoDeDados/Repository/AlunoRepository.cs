@@ -42,22 +42,70 @@ namespace Escola_ExercicioBancoDeDados.Repository
             }
         }
 
-        public void SelectById(Guid id)
+        public Aluno SelectById(Guid id)
         {
             using var conn = new OracleConnection(ConnectionStting);
 
             conn.Open();
 
-            using var cmd = new OracleCommand("select * from aluno", conn);
+            using var cmd = new OracleCommand
+                (@"
+                SELECT a.NOME AS aluno_nome,
+                a.ID AS aluno_id,
+                a.IDADE,
+                c.ID AS curso_id,
+                c.NOME AS curso_nome,
+                t.ID AS turma_id
+                FROM ALUNO a 
+                LEFT JOIN TURMA t
+                ON a.TURMA_ID = t.ID
+                LEFT JOIN CURSO c 
+                ON c.ID = t.CURSO_ID
+                WHERE a.ID = :Id", conn);
+
+            cmd.Parameters.Add("Id", id.ToString());
+
             using ( var reader = cmd.ExecuteReader())
             {
+                Aluno aluno = null;
                 while (reader.Read())
                 {
-                    
-                   
+                    aluno = new Aluno(
+                        nome: reader["aluno_nome"].ToString(),
+                        idade: int.Parse(reader["idade"].ToString()),
+                        id: Guid.Parse(reader["aluno_id"].ToString()),
+                        turma: new Turma(
+                            new Curso(
+                                nome: reader["curso_nome"].ToString(),
+                                id: Guid.Parse(reader["curso_id"].ToString())
+                                ),
+                            id: Guid.Parse(reader["turma_id"].ToString())
+                            )
+                        );
                 }
+                return aluno;
             }
         }
 
+        public int Delete(Guid id)
+        {
+            try
+            {
+                var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                var cmd1 = new OracleCommand(@"DELETE FROM ALUNO_MATERIA WHERE ALUNO_ID = :Id", conn);
+                cmd1.Parameters.Add("Id", id.ToString());
+                cmd1.ExecuteNonQuery();
+                var cmd2 = new OracleCommand(@"DELETE FROM ALUNO WHERE ID = :Id", conn);
+                cmd2.Parameters.Add("Id", id.ToString());
+                return cmd2.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro no delete");
+            }
+        }
     }
 }

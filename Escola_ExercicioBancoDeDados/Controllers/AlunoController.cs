@@ -16,7 +16,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostAluno(AlunoDTO alunoDTO)
+        public IActionResult Post(AlunoDTO alunoDTO)
         {
             alunoDTO.Validar();
             if (!alunoDTO.Valido) return BadRequest(alunoDTO.GetErrors());
@@ -28,6 +28,34 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             {
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }
+        }
+        [HttpPost, Route("materia")]
+        public IActionResult PostMateria(UpdateAlunoDTO updateAlunoDTO)
+        {
+            updateAlunoDTO.Validar();
+            if (!updateAlunoDTO.Valido) return BadRequest(updateAlunoDTO.GetErrors());
+            try
+            {
+                return Ok(_service.UpdateMaterias(updateAlunoDTO));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message});
+            }
+        }
+        [HttpDelete, Route("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest( new ExceptionResult { Message = ex.Message} );
+            }
+           
         }
     }
 }

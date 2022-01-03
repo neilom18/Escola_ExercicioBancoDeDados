@@ -36,6 +36,7 @@ namespace Escola_ExercicioBancoDeDados
             services.AddSingleton<CursoRepository>();
             services.AddSingleton<MateriaRepository>();
             services.AddSingleton<MateriaCursoRepository>();
+            services.AddSingleton<AlunoMateriaRepository>();
             services.AddSingleton<TurmaRepository>();
             services.AddSingleton<ProfessorRepository>();
 

@@ -53,7 +53,11 @@ namespace Escola_ExercicioBancoDeDados.Repository
 
             var cmd = new OracleCommand
                 (
-                    @"SELECT * FROM MATERIA m LEFT JOIN PROFESSOR p ON m.PROFESSOR_ID = p.ID WHERE m.ID = :Id", conn
+                    @"SELECT m.ID ,m.DESCRICAO , m.NOME AS materia_nome, p.NOME AS professor_nome, m.PROFESSOR_ID, p.IDADE
+                    FROM MATERIA m
+                    LEFT JOIN PROFESSOR p
+                    ON m.PROFESSOR_ID = p.ID
+                    WHERE m.ID = :Id", conn
                 );
 
             cmd.Parameters.Add("Id", id.ToString());
