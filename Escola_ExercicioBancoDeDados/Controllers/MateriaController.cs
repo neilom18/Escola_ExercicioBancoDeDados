@@ -29,5 +29,18 @@ namespace Escola_ExercicioBancoDeDados.Controllers
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message });
+            }
+        }
     }
 }

@@ -116,6 +116,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
         {
             try
             {
+                int n;
                 using var conn = new OracleConnection(ConnectionStting);
 
                 conn.Open();
@@ -141,11 +142,11 @@ namespace Escola_ExercicioBancoDeDados.Repository
                     cmd.Transaction = transaction;
                     cmd.Parameters.Add("Id", id.ToString());
 
-                    var n = cmd.ExecuteNonQuery();
+                    n = cmd.ExecuteNonQuery();
                     
+                }
                     transaction.Commit();
                     return n;
-                }
             }
             catch (Exception)
             {

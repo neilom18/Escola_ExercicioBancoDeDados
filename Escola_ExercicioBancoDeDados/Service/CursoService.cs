@@ -1,10 +1,12 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO;
+using Escola_ExercicioBancoDeDados.DTO.QueryParameters;
 using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Escola_ExercicioBancoDeDados.Service
 {
@@ -14,6 +16,7 @@ namespace Escola_ExercicioBancoDeDados.Service
         private readonly MateriaCursoRepository _materiaCursoRepository;
         private readonly MateriaRepository _materiaRepository;
         private readonly IConfiguration _configuration;
+
         private string ConnectionStting => _configuration.GetConnectionString("AppAcademy");
 
         public CursoService(CursoRepository repository,
@@ -63,6 +66,23 @@ namespace Escola_ExercicioBancoDeDados.Service
                 throw;
             }
             return curso;
+        }
+
+        public IEnumerable<Curso> GetCursos(CursoQuery cursoQuery)
+        {
+            var cursos = _repository.SelectByParam(cursoQuery);
+            foreach(var curso in cursos)
+            {
+                List<Materia> materias = _repository.GetMateriasFromCursos(curso.Id);
+                curso.SetMaterias(materias);
+            }
+            return cursos;
+        }
+
+        public void Delete(Guid id)
+        {
+            var result = _repository.Delete(id);
+            if (result == 0) throw new Exception("Não foi possivel encontrar o curso");
         }
     }
 }

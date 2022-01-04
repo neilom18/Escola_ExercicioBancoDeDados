@@ -1,6 +1,7 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO;
 using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
+using System;
 
 namespace Escola_ExercicioBancoDeDados.Service
 {
@@ -24,6 +25,12 @@ namespace Escola_ExercicioBancoDeDados.Service
                 materia = new Materia(nome: materiaDTO.Nome, descricao: materiaDTO.Descricao, professor: professor);
                 
             return _repository.Insert(materia);
+        }
+
+        public void Delete(Guid id)
+        {
+            var n = _repository.Delete(id);
+            if (n == 0) throw new Exception("Não foi possível encontrar a matéria");
         }
     }
 }

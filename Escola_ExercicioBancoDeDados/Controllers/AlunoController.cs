@@ -1,4 +1,5 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO;
+using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
 using Escola_ExercicioBancoDeDados.DTO.Result;
 using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,18 @@ namespace Escola_ExercicioBancoDeDados.Controllers
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
+        [HttpGet]
+        public IActionResult Get([FromQuery]AlunoQuery aluno)
+        {
+            try
+            {
+                return Ok(_service.GetAlunos(aluno));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message });
+            }
+        }
         [HttpDelete, Route("{id}")]
         public IActionResult Delete(Guid id)
         {
@@ -55,7 +68,6 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             {
                 return BadRequest( new ExceptionResult { Message = ex.Message} );
             }
-           
         }
     }
 }

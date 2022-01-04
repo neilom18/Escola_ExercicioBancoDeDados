@@ -1,4 +1,5 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO;
+using Escola_ExercicioBancoDeDados.DTO.QueryParameters;
 using Escola_ExercicioBancoDeDados.DTO.Result;
 using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,32 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             catch(Exception ex) 
             {
                 return BadRequest(new ExceptionResult { Message = ex.Message});
+            }
+        }
+        [HttpGet]
+        public IActionResult Get([FromQuery]CursoQuery cursoQuery)
+        {
+            try
+            {
+                return Ok(_service.GetCursos(cursoQuery));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            try 
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest( new ExceptionResult { Message = ex.Message });
             }
         }
     }

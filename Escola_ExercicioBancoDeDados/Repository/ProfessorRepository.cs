@@ -68,5 +68,61 @@ namespace Escola_ExercicioBancoDeDados.Repository
                     id: Guid.Parse(reader["id"].ToString()));
             }
         }
+
+        public int Delete(Guid id)
+        {
+            try
+            {
+                int n;
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                OracleTransaction transaction = conn.BeginTransaction();
+
+                using (var cmd = new OracleCommand
+                    (
+                    @"DELETE FROM MATERIA_CURSO WHERE MATERIA_ID = :Id", conn
+                    ))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.Add("Id", id.ToString());
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = new OracleCommand
+                    (
+                    @"DELETE FROM ALUNO_MATERIA WHERE MATERIA_ID = :Id", conn
+                    ))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.Add("Id", id.ToString());
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = new OracleCommand
+                    (
+                    @"DELETE FROM MATERIA WHERE PROFESSOR_ID = :Id"
+                    ))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.Add("Id", id.ToString());
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = new OracleCommand
+                    (
+                    @"DELETE FROM PROFESSOR WHERE ID = :Id", conn
+                    ))
+                {
+                    cmd.Transaction = transaction;
+                    cmd.Parameters.Add("Id", id.ToString());
+                    n = cmd.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                return n;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro no Delete da matéria");
+            }
+        }
     }
 }

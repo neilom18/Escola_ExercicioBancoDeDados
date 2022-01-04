@@ -1,8 +1,10 @@
-﻿using Escola_ExercicioBancoDeDados.Endity;
+﻿using Escola_ExercicioBancoDeDados.DTO.QueryParameters;
+using Escola_ExercicioBancoDeDados.Endity;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Escola_ExercicioBancoDeDados.Repository
 {
@@ -136,12 +138,138 @@ namespace Escola_ExercicioBancoDeDados.Repository
                             }
                         }
                     }*/
-                curso.AddMaterias(materias);
+                curso.SetMaterias(materias);
                 return curso;
             }
             catch 
             {
                 throw new Exception("Ocoreu um erro na busca do curso");
+            }
+        }
+
+        public IEnumerable<Curso> SelectByParam(CursoQuery cursoQuery)
+        {
+            List<Curso> cursos = new List<Curso>();
+            try
+            {
+                using (var conn = new OracleConnection(ConnectionStting))
+                {
+
+                    conn.Open();
+
+                    var parameterCollection = new Dictionary<string, object>();
+                    StringBuilder sb = new StringBuilder(
+                        @"SELECT * FROM
+                        (
+	                    SELECT a.*, rownum r__
+	                    FROM
+	                    (
+                        SELECT 
+                        c.ID AS curso_id,
+                        c.NOME AS curso_nome
+                        FROM CURSO c 
+                        WHERE 1 = 1");
+                    if (cursoQuery.Nome != null)
+                    {
+                        sb.Append(" AND c.NOME = :Curso_nome");
+                        parameterCollection.Add("Curso_nome", cursoQuery.Nome);
+                    }
+                    if (cursoQuery.Professor_Nome != null)
+                    {
+                        sb.Append(@"AND c.ID IN (
+                            SELECT mc.CURSO_ID 
+                            FROM MATERIA_CURSO mc
+                            WHERE mc.MATERIA_ID IN 
+                            (SELECT m.ID FROM MATERIA m
+                            WHERE m.PROFESSOR_ID
+                            IN
+                            (SELECT p.ID FROM PROFESSOR p
+                            WHERE p.NOME = :Professor_nome)))");
+                        parameterCollection.Add("Professor_nome", cursoQuery.Professor_Nome);
+                    }
+
+                    sb.Append(@") a
+                        WHERE rownum < ((: pageNumber * :pageSize) + 1 )
+                        )
+                        WHERE r__ >= (((: pageNumber - 1) * :pageSize) +1)");
+
+                    parameterCollection.Add("pageNumber", cursoQuery.Page);
+                    parameterCollection.Add("pageSize", cursoQuery.Size);
+                    using (var cmd = new OracleCommand(sb.ToString(), conn))
+                    {
+                        cmd.BindByName = true;
+                        foreach (var parameter in parameterCollection)
+                            cmd.Parameters.Add(parameter.Key, parameter.Value);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                cursos.Add(new Curso(
+                                    nome: reader["curso_nome"].ToString(),
+                                    id: Guid.Parse(reader["curso_id"].ToString())
+                                    ));
+                            }
+                        }
+                    }
+                }
+                return cursos;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro ao buscar os cursos");
+            }
+        }
+
+        public List<Materia> GetMateriasFromCursos(Guid id)
+        {
+            List<Materia> materias = new List<Materia>();
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using (var cmd = new OracleCommand
+                    (
+                    @"SELECT m.ID,
+                m.NOME AS materia_nome,
+                m.DESCRICAO,
+                m.PROFESSOR_ID,
+                p.NOME AS professor_nome,
+                p.IDADE
+                FROM MATERIA m
+                LEFT JOIN PROFESSOR p
+                ON p.ID = m.PROFESSOR_ID
+                WHERE m.ID 
+                IN 
+                (SELECT mc.MATERIA_ID 
+                FROM MATERIA_CURSO mc
+                WHERE mc.CURSO_ID = :Curso_id)", conn
+                    ))
+                {
+                    cmd.Parameters.Add("Curso_id", id.ToString());
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            materias.Add(new Materia
+                                (nome: reader["materia_nome"].ToString(),
+                                descricao: reader["descricao"].ToString(),
+                                id: Guid.Parse(reader["id"].ToString()),
+                                professor: new Professor(
+                                    nome: reader["professor_nome"].ToString(),
+                                    idade: int.Parse(reader["idade"].ToString()),
+                                    id: Guid.Parse(reader["professor_id"].ToString()))
+                                ));
+                        }
+                    }
+                }
+                return materias;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro ao buscar as materias do curso");
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO;
+using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
 using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
 using System;
@@ -14,6 +15,7 @@ namespace Escola_ExercicioBancoDeDados.Service
         private readonly CursoRepository _cursoRepository;
         private readonly MateriaCursoRepository _materiaCursoRepository;
         private readonly AlunoMateriaRepository _alunoMateriaRepository;
+
         public AlunoService(AlunoRepository repository, TurmaRepository turmaRepository, CursoRepository cursoRepository, MateriaCursoRepository materiaCursoRepository, AlunoMateriaRepository alunoMateriaRepository)
         {
             _repository = repository;
@@ -64,6 +66,17 @@ namespace Escola_ExercicioBancoDeDados.Service
 
             _alunoMateriaRepository.Insert(aluno);
             return aluno;
+        }
+
+        public IEnumerable<Aluno> GetAlunos(AlunoQuery alunoQuery)
+        {
+            var alunos = _repository.SelectByParam(alunoQuery);
+            foreach(var aluno in alunos)
+            {
+                var m = _repository.GetMateriasFromAluno(aluno.Id);
+                aluno.SetMaterias(m);
+            }
+            return alunos;
         }
 
         public void Delete(Guid id)
