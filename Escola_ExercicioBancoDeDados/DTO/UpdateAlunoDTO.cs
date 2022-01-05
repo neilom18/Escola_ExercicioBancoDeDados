@@ -7,9 +7,9 @@ namespace Escola_ExercicioBancoDeDados.DTO
     public class UpdateAlunoDTO : Validator
     {
         public Guid Aluno_id { get; set; }
-        public IEnumerable<Guid> Materias_id { get; set; }
+        public List<Guid> Materias_id { get; set; }
 
-        public override Dictionary<string, string> GetErrors()
+        public override List<KeyValuePair<string, string>> GetErrors()
         {
             return _errors;
         }
@@ -20,19 +20,24 @@ namespace Escola_ExercicioBancoDeDados.DTO
             if(Aluno_id == Guid.Empty)
             {
                 Valido = false;
-                _errors.Add(nameof(Aluno_id), "O aluno precisa ser informado");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Aluno_id), "O aluno precisa ser informado"));
             }
             if(Materias_id.Count() > 3 || Materias_id.Count() < 1)
             {
                 Valido = false;
-                _errors.Add(nameof(Materias_id), "Deve ter entre uma a três matérias");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Materias_id), "Deve ter entre uma a três matérias"));
             }
             foreach(var id in Materias_id)
             {
                 if (id == Guid.Empty) 
                 {
                     Valido = false;
-                    _errors.Add(nameof(Materias_id), "A materia precisa ser informada no formato correto");
+                    _errors.Add(new KeyValuePair<string, string>(nameof(Materias_id), "A materia precisa ser informada no formato correto"));
+                }
+                if (Materias_id.FindAll(x => x == id).Count > 1)
+                {
+                    Valido = false;
+                    _errors.Add(new KeyValuePair<string, string>(nameof(Materias_id), "Não pode ter matéiras repetidas"));
                 }
             }
         }

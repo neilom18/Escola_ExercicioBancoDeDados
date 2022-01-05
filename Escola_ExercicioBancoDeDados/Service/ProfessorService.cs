@@ -20,6 +20,14 @@ namespace Escola_ExercicioBancoDeDados.Service
             _repository.Insert(professor);
             return professor;
         }
+
+        public Professor UpdateProfessor(ProfessorDTO professorDTO, Guid id)
+        {
+            var professor = new Professor(nome: professorDTO.Nome, idade: professorDTO.Idade, id: id);
+            var n = _repository.Update(professor);
+            if (n == 0) throw new Exception("Não foi possível encontrar o professor");
+            return professor;
+        }
         public void Delete(Guid id)
         {
             var n = _repository.Delete(id);

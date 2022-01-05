@@ -18,13 +18,27 @@ namespace Escola_ExercicioBancoDeDados.Service
         public Materia RegistraMateria(MateriaDTO materiaDTO)
         {
             var professor = _professorRepository.SelectById(materiaDTO.Professor_id);
-            Materia materia;
+
             if (professor is null)
                 throw new System.Exception("Não foi possivel encontrar esse professor");
-            else
-                materia = new Materia(nome: materiaDTO.Nome, descricao: materiaDTO.Descricao, professor: professor);
+
+            var materia = new Materia(nome: materiaDTO.Nome, descricao: materiaDTO.Descricao, professor: professor);
                 
             return _repository.Insert(materia);
+        }
+
+        public Materia UpdateMateria(MateriaDTO materiaDTO, Guid id)
+        {
+            var professor = _professorRepository.SelectById(materiaDTO.Professor_id);
+
+            if (professor is null)
+                throw new System.Exception("Não foi possivel encontrar esse professor");
+
+           var materia = new Materia(nome: materiaDTO.Nome, descricao: materiaDTO.Descricao, professor: professor, id: id);
+
+           var n = _repository.Update(materia);
+            if (n == 0) throw new Exception("Não foi possível encontrar a matéria");
+            return materia;
         }
 
         public void Delete(Guid id)

@@ -29,6 +29,22 @@ namespace Escola_ExercicioBancoDeDados.Controllers
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
+
+        [HttpPut, Route("{id}")]
+        public IActionResult Put(MateriaDTO materiaDTO, Guid id)
+        {
+            materiaDTO.Validar();
+            if (!materiaDTO.Valido) return BadRequest(materiaDTO.GetErrors());
+            try
+            {
+                return Ok(_service.UpdateMateria(materiaDTO, id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message });
+            }
+        }
+
         [HttpDelete]
         public IActionResult Delete(Guid id)
         {

@@ -253,6 +253,35 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 throw new Exception("Houve um erro ao buscar as materias do aluno");
             }
         }
+
+        public int Update(Aluno aluno)
+        {
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using (var cmd = new OracleCommand
+                    (
+                    @"UPDATE APPACADEMY.ALUNO
+                SET NOME = :Nome, IDADE = :Idade, TURMA_ID = :Turma_id
+                WHERE ID = :Id", conn
+                    ))
+                {
+                    cmd.Parameters.Add("Nome", aluno.Nome);
+                    cmd.Parameters.Add("Idade", aluno.Idade);
+                    cmd.Parameters.Add("Turma_id", aluno.Turma.Id.ToString());
+                    cmd.Parameters.Add("Id", aluno.Id.ToString());
+
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro na atualização do aluno");
+            }
+        }
         public int Delete(Guid id)
         {
             try

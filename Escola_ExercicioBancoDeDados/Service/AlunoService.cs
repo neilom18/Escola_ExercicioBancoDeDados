@@ -52,6 +52,35 @@ namespace Escola_ExercicioBancoDeDados.Service
             return aluno;
         }
 
+        public Aluno UpdateAluno(AlunoDTO alunoDTO, Guid id)
+        {
+            var curso_id = _turmaRepository.GetCursoId(alunoDTO.Turma_id);
+            if (curso_id == Guid.Empty)
+                throw new Exception("O curso buscado não foi encontrado");
+            var curso = _cursoRepository.SelectById(curso_id);
+            var alunos = _turmaRepository.GetAlunos(alunoDTO.Turma_id);
+            Turma turma;
+            if (alunos.Any())
+            {
+                turma = new Turma(curso: curso, id: alunoDTO.Turma_id, alunos: alunos);
+            }
+            else
+            {
+                turma = new Turma(curso: curso, id: alunoDTO.Turma_id);
+            }
+            var aluno = new Aluno
+                (
+                nome: alunoDTO.Nome,
+                idade: alunoDTO.Idade,
+                turma: turma,
+                id: id
+                );
+            aluno.Turma.Alunos.Add(new Aluno(aluno.Nome, aluno.Idade, aluno.Id));
+            var n =_repository.Update(aluno);
+            if (n == 0) throw new Exception("Não foi possível encontrar o aluno");
+            return aluno;
+        }
+
         public Aluno UpdateMaterias(UpdateAlunoDTO updateAlunoDTO)
         {
             var aluno = _repository.SelectById(updateAlunoDTO.Aluno_id);

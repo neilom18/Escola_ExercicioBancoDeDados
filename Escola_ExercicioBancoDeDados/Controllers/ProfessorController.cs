@@ -30,6 +30,20 @@ namespace Escola_ExercicioBancoDeDados.Controllers
                 return BadRequest(new ExceptionResult { Message = ex.Message });
             }
         }
+        [HttpPut, Route("{id}")]
+        public IActionResult Put(ProfessorDTO professor, Guid id)
+        {
+            professor.Validar();
+            if (!professor.Valido) return BadRequest(professor.GetErrors());
+            try
+            {
+                return Ok(_service.UpdateProfessor(professor, id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message });
+            }
+        }
         [HttpDelete]
         public IActionResult Delete(Guid id)
         {

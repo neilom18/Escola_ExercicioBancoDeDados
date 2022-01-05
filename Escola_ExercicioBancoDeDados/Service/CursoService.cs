@@ -39,7 +39,7 @@ namespace Escola_ExercicioBancoDeDados.Service
                 var materia = _materiaRepository.SelectById(materia_id);
                 materias.Add(materia);
             }
-            if (materias.Count != cursoDTO.Materias_id.Count) throw new System.Exception("Alguma matéria não foi encontrada");
+            if (materias.Count != cursoDTO.Materias_id.Count) throw new Exception("Alguma matéria não foi encontrada");
             // Estancia o Curso e abre a conexão.
             var curso = new Curso(materias: materias, nome: cursoDTO.Nome);
 
@@ -63,10 +63,48 @@ namespace Escola_ExercicioBancoDeDados.Service
             }
             catch (Exception)
             {
-                throw;
+                throw new Exception("Não foi possível adicionar o curso");
             }
             return curso;
         }
+
+        /*public Curso UpdateCurso(CursoDTO cursoDTO, Guid id)
+        {
+            // Busca das matérias
+            List<Materia> materias = new List<Materia>();
+            foreach (var materia_id in cursoDTO.Materias_id)
+            {
+                var materia = _materiaRepository.SelectById(materia_id);
+                materias.Add(materia);
+            }
+            if (materias.Count != cursoDTO.Materias_id.Count) throw new Exception("Alguma matéria não foi encontrada");
+            // Estancia o Curso e abre a conexão.
+            var curso = new Curso(materias: materias, nome: cursoDTO.Nome, id: id);
+
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+                conn.Open();
+                // Create a local transaction
+                OracleTransaction transaction = conn.BeginTransaction();
+                var command = new OracleCommand(@"INSERT INTO APPACADEMY.CURSO
+                                            (NOME, ID)
+                                            VALUES(:Nome, :Id)", conn);
+                command.Transaction = transaction;
+                _repository.Update(curso, command);
+                var command2 = new OracleCommand(@"INSERT INTO APPACADEMY.MATERIA_CURSO
+                                            (ID, MATERIA_ID, CURSO_ID)
+                                            VALUES(:Id, :Materia_id, :Curso_id)", conn);
+                command2.Transaction = transaction;
+                _materiaCursoRepository.Update(curso, command2);
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Não foi possível atualizar o curso");
+            }
+            return curso;
+        }*/
 
         public IEnumerable<Curso> GetCursos(CursoQuery cursoQuery)
         {

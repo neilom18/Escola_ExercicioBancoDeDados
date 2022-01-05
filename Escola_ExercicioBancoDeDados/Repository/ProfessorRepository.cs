@@ -69,6 +69,34 @@ namespace Escola_ExercicioBancoDeDados.Repository
             }
         }
 
+        public int Update(Professor professor)
+        {
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using (var cmd = new OracleCommand
+                    (
+                    @"UPDATE APPACADEMY.PROFESSOR
+                SET NOME = :Nome, IDADE = :Idade
+                WHERE ID = :Id", conn
+                    ))
+                {
+                    cmd.Parameters.Add("Nome", professor.Nome);
+                    cmd.Parameters.Add("Idade", professor.Idade);
+                    cmd.Parameters.Add("Id", professor.Id.ToString());
+
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro ao atualizar o professor");
+            }
+        }
+
         public int Delete(Guid id)
         {
             try

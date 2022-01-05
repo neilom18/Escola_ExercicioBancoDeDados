@@ -79,6 +79,35 @@ namespace Escola_ExercicioBancoDeDados.Repository
             }
         }
 
+        public int Update(Materia materia)
+        {
+            try
+            {
+                using var conn = new OracleConnection(ConnectionStting);
+
+                conn.Open();
+
+                using (var cmd = new OracleCommand
+                    (
+                    @"UPDATE APPACADEMY.MATERIA
+                SET NOME = :Nome, DESCRICAO = :Descricao, PROFESSOR_ID = :Professor_id
+                WHERE ID = :Id", conn
+                    ))
+                {
+                    cmd.Parameters.Add("Nome", materia.Nome);
+                    cmd.Parameters.Add("Descricao", materia.Descricao);
+                    cmd.Parameters.Add("Professor_id", materia.Professor.Id.ToString());
+                    cmd.Parameters.Add("Id", materia.Id.ToString());
+
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Houve um erro na atualização da matéria");
+            }
+        }
+
         public int Delete(Guid id)
         {
             try

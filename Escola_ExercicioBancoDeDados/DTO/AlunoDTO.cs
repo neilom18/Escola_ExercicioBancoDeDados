@@ -9,7 +9,7 @@ namespace Escola_ExercicioBancoDeDados.DTO
         public string Nome { get; set; }
         public int Idade { get; set; }
 
-        public override Dictionary<string, string> GetErrors()
+        public override List<KeyValuePair<string, string>> GetErrors()
         {
             return _errors;
         }
@@ -20,17 +20,17 @@ namespace Escola_ExercicioBancoDeDados.DTO
             if(Idade <= 0)
             {
                 Valido = false;
-                _errors.Add(nameof(Idade), "Idade não pode ser nula ou negativa");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Idade), "Idade não pode ser nula ou negativa"));
             }
             if (string.IsNullOrWhiteSpace(Nome))
             {
                 Valido = false;
-                _errors.Add(nameof(Nome), "O nome precisa ser informado!");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Nome), "O nome precisa ser informado!"));
             }
             if(Turma_id == Guid.Empty)
             {
                 Valido = false;
-                _errors.Add(nameof(Turma_id), "A turma precisa ser informada");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Turma_id), "A turma precisa ser informada"));
             }
         }
     }

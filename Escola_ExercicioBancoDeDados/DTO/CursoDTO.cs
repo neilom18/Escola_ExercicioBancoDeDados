@@ -8,7 +8,7 @@ namespace Escola_ExercicioBancoDeDados.DTO
         public List<Guid> Materias_id { get; set; }
         public string Nome { get; set; }
 
-        public override Dictionary<string, string> GetErrors()
+        public override List<KeyValuePair<string, string>>GetErrors()
         {
             return _errors;
         }
@@ -19,7 +19,7 @@ namespace Escola_ExercicioBancoDeDados.DTO
             if (string.IsNullOrWhiteSpace(Nome))
             {
                 Valido = false;
-                _errors.Add(nameof(Nome), "O nome precisa ser informado");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Nome), "O nome precisa ser informado"));
             }
             if(Materias_id is not null)
             {
@@ -28,14 +28,18 @@ namespace Escola_ExercicioBancoDeDados.DTO
                     if (materia == Guid.Empty)
                     {
                         Valido = false;
-                        _errors.Add(nameof(Materias_id), "Todos os ids precisam ser válidos");
+                        _errors.Add(new KeyValuePair<string, string>(nameof(Materias_id), "Todos os ids precisam ser válidos"));
                     }
                     if(materia.ToString().Length != 36) 
                     {
                         Valido = false;
-                        _errors.Add(nameof(Materias_id), "Todos os ids precisam estar no formato GUID");
+                        _errors.Add(new KeyValuePair<string, string>(nameof(Materias_id), "Todos os ids precisam estar no formato GUID"));
                     }
-
+                    if(Materias_id.FindAll(x => x == materia).Count > 1)
+                    {
+                        Valido = false;
+                        _errors.Add(new KeyValuePair<string, string>(nameof(Materias_id), "Não pode ter matéiras repetidas"));
+                    }
                 }
             }
         }

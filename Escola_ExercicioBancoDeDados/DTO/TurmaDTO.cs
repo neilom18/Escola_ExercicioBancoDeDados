@@ -7,7 +7,7 @@ namespace Escola_ExercicioBancoDeDados.DTO
     {
         public Guid Curso_id { get; set; }
 
-        public override Dictionary<string, string> GetErrors()
+        public override List<KeyValuePair<string, string>> GetErrors()
         {
             return _errors;
         }
@@ -18,7 +18,7 @@ namespace Escola_ExercicioBancoDeDados.DTO
             if(Curso_id == Guid.Empty)
             {
                 Valido = false;
-                _errors.Add(nameof(Curso_id), "O curso precisa ser informado");
+                _errors.Add(new KeyValuePair<string, string>(nameof(Curso_id), "O curso precisa ser informado"));
             }
         }
     }
