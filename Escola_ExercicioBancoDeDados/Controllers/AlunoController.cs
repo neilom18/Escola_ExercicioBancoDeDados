@@ -1,4 +1,5 @@
-﻿using Escola_ExercicioBancoDeDados.DTO;
+﻿using Dominio;
+using Escola_ExercicioBancoDeDados.DTO;
 using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
 using Escola_ExercicioBancoDeDados.DTO.Result;
 using Escola_ExercicioBancoDeDados.Service;
@@ -11,12 +12,15 @@ namespace Escola_ExercicioBancoDeDados.Controllers
     public class AlunoController : ControllerBase
     {
         private readonly AlunoService _service;
-        public AlunoController(AlunoService service)
+        private readonly IUnityOfWork _unityOfWork;
+        public AlunoController(AlunoService service, IUnityOfWork unityOfWork)
         {
             _service = service;
+
+            _unityOfWork = unityOfWork;
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Post(AlunoDTO alunoDTO)
         {
             alunoDTO.Validar();
@@ -43,7 +47,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             {
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }
-        }
+        }*/
         [HttpGet]
         public IActionResult Get([FromQuery]AlunoQuery aluno)
         {
@@ -57,7 +61,7 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             }
         }
 
-        [HttpPut, Route("{id}")]
+        /*[HttpPut, Route("{id}")]
         public IActionResult Put(AlunoDTO alunoDTO, Guid id)
         {
             alunoDTO.Validar();
@@ -84,6 +88,6 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             {
                 return BadRequest( new ExceptionResult { Message = ex.Message} );
             }
-        }
+        }*/
     }
 }

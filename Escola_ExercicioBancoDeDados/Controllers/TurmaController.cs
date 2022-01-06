@@ -4,7 +4,7 @@ using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
-namespace Escola_ExercicioBancoDeDados.Controllers
+/*namespace Escola_ExercicioBancoDeDados.Controllers
 {
     [ApiController, Route("[controller]")]
     public class TurmaController : ControllerBase
@@ -43,4 +43,4 @@ namespace Escola_ExercicioBancoDeDados.Controllers
             }
         }
     }
-}
+}*/

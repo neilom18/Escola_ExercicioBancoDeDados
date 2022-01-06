@@ -1,10 +1,15 @@
+using Dominio;
+using Dominio.IRepository.Dapper;
+using EFContext;
 using Escola_ExercicioBancoDeDados.Controllers;
+using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
 using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,22 +34,29 @@ namespace Escola_ExercicioBancoDeDados
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("AppAcademy");
 
             services.AddControllers();
+            services.AddDbContext<EFContext.AppContext>(
+    configuration =>
+    {
+        configuration.UseOracle(connectionString,
+            opt =>
+            {
+                opt.MigrationsAssembly(typeof(EFContext.AppContext).Assembly.GetName().Name);
+            });
+    });
+            services.AddScoped<IUnityOfWork, UnityOfWork>();
 
-            services.AddSingleton<AlunoRepository>();
-            services.AddSingleton<CursoRepository>();
-            services.AddSingleton<MateriaRepository>();
-            services.AddSingleton<MateriaCursoRepository>();
-            services.AddSingleton<AlunoMateriaRepository>();
-            services.AddSingleton<TurmaRepository>();
-            services.AddSingleton<ProfessorRepository>();
+            services.AddSingleton<IAlunoRepositoryDapper, DapperContext.Repository.AlunoRepository>();
 
             services.AddTransient<AlunoService>();
-            services.AddTransient<CursoService>();
+            /*services.AddTransient<CursoService>();
             services.AddTransient<MateriaService>();
             services.AddTransient<TurmaService>();
-            services.AddTransient<ProfessorService>();
+            services.AddTransient<ProfessorService>();*/
+
+            services.AddTransient<AlunoRepository>();
 
             services.AddSwaggerGen(c =>
             {

@@ -1,4 +1,6 @@
-﻿using Escola_ExercicioBancoDeDados.DTO;
+﻿using Dominio;
+using Dominio.IRepository.Dapper;
+using Escola_ExercicioBancoDeDados.DTO;
 using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
 using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
@@ -11,21 +13,17 @@ namespace Escola_ExercicioBancoDeDados.Service
     public class AlunoService
     {
         private readonly AlunoRepository _repository;
-        private readonly TurmaRepository _turmaRepository;
-        private readonly CursoRepository _cursoRepository;
-        private readonly MateriaCursoRepository _materiaCursoRepository;
-        private readonly AlunoMateriaRepository _alunoMateriaRepository;
+        private readonly IAlunoRepositoryDapper _alunoRepositoryDapper;
+        private readonly IUnityOfWork _unityOfWork;
 
-        public AlunoService(AlunoRepository repository, TurmaRepository turmaRepository, CursoRepository cursoRepository, MateriaCursoRepository materiaCursoRepository, AlunoMateriaRepository alunoMateriaRepository)
+        public AlunoService(AlunoRepository repository, IAlunoRepositoryDapper alunoRepositoryDapper, IUnityOfWork unityOfWork)
         {
+            _alunoRepositoryDapper = alunoRepositoryDapper;
+            _unityOfWork = unityOfWork;
             _repository = repository;
-            _turmaRepository = turmaRepository;
-            _cursoRepository = cursoRepository;
-            _materiaCursoRepository = materiaCursoRepository;
-            _alunoMateriaRepository = alunoMateriaRepository;
         }
 
-        public Aluno RegistraAluno(AlunoDTO alunoDTO)
+        /*public Aluno RegistraAluno(AlunoDTO alunoDTO)
         {
             var curso_id = _turmaRepository.GetCursoId(alunoDTO.Turma_id);
             if (curso_id == Guid.Empty)
@@ -95,11 +93,11 @@ namespace Escola_ExercicioBancoDeDados.Service
 
             _alunoMateriaRepository.Insert(aluno);
             return aluno;
-        }
+        }*/
 
         public IEnumerable<Aluno> GetAlunos(AlunoQuery alunoQuery)
         {
-            var alunos = _repository.SelectByParam(alunoQuery);
+            var alunos = _alunoRepositoryDapper.GetAllByParameters(alunoQuery);
             foreach(var aluno in alunos)
             {
                 var m = _repository.GetMateriasFromAluno(aluno.Id);
@@ -108,10 +106,10 @@ namespace Escola_ExercicioBancoDeDados.Service
             return alunos;
         }
 
-        public void Delete(Guid id)
+        /*public void Delete(Guid id)
         {
             var result = _repository.Delete(id);
             if (result == 0) throw new Exception("Não foi encontrado o aluno");
-        }
+        }*/
     }
 }

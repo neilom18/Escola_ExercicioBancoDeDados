@@ -3,7 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escola_ExercicioBancoDeDados", "Escola_ExercicioBancoDeDados\Escola_ExercicioBancoDeDados.csproj", "{615F4C32-3550-4575-8F7E-E6E0C53D954E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Escola_ExercicioBancoDeDados", "Escola_ExercicioBancoDeDados\Escola_ExercicioBancoDeDados.csproj", "{615F4C32-3550-4575-8F7E-E6E0C53D954E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{192671E7-2646-44BB-B7CB-4B30C84E43AC} = {192671E7-2646-44BB-B7CB-4B30C84E43AC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{192671E7-2646-44BB-B7CB-4B30C84E43AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFContext", "EFContext\EFContext.csproj", "{45737373-8BBB-414B-8133-FAA42753228F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperContext", "DapperContext\DapperContext.csproj", "{35D89141-8625-4F88-B8E4-24C484CC536D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +24,18 @@ Global
 		{615F4C32-3550-4575-8F7E-E6E0C53D954E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{615F4C32-3550-4575-8F7E-E6E0C53D954E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{615F4C32-3550-4575-8F7E-E6E0C53D954E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{192671E7-2646-44BB-B7CB-4B30C84E43AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192671E7-2646-44BB-B7CB-4B30C84E43AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192671E7-2646-44BB-B7CB-4B30C84E43AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192671E7-2646-44BB-B7CB-4B30C84E43AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45737373-8BBB-414B-8133-FAA42753228F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45737373-8BBB-414B-8133-FAA42753228F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45737373-8BBB-414B-8133-FAA42753228F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45737373-8BBB-414B-8133-FAA42753228F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D89141-8625-4F88-B8E4-24C484CC536D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D89141-8625-4F88-B8E4-24C484CC536D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D89141-8625-4F88-B8E4-24C484CC536D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D89141-8625-4F88-B8E4-24C484CC536D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
