@@ -4,14 +4,13 @@
 
 	*Talvez retirar o MaxAlunos de Turma
 
-
-
-
-
-	-       //Passar pra um Update
+	*       //Passar pra um Update
             List<Materia> materias = new List<Materia>();
             foreach (var id in aluno.Materias_id)               
                 materias.Add(_materiaRepository.SelectById(id));
 
             if(materias.Count > 3 || materias.Count < 1)
                 throw new Exception("Precisa se cadastrar no mínimo em 1 matéria e no máximo em 3");//
+
+
+    - Update CURSO

@@ -46,6 +46,7 @@ namespace Escola_ExercicioBancoDeDados.Repository
                 throw new Exception("Houve um erro ao adicionar a matéria ao curso");
             }
         }
+
         public void Insert(Curso curso, OracleCommand command)
         {
 
@@ -61,7 +62,6 @@ namespace Escola_ExercicioBancoDeDados.Repository
                     command.ExecuteNonQuery();
                     command.Parameters.Clear();
                 }
-
             }
             catch
             {
@@ -123,6 +123,17 @@ namespace Escola_ExercicioBancoDeDados.Repository
             {
                 throw new Exception("Houve um erro ao buscar a materia de um curso");
             }
+        }
+
+        public void Delete(Curso curso, OracleTransaction transaction)
+        {
+            using var cmd = new OracleCommand(@"DELETE FROM MATERIA_CURSO WHERE CURSO_ID = :CURSO_ID", transaction.Connection);
+
+            cmd.Transaction = transaction;
+
+            cmd.Parameters.Add("CURSO_ID", curso.Id.ToString());
+
+            cmd.ExecuteNonQuery();
         }
     }
 }

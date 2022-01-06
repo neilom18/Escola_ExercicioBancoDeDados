@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Escola_ExercicioBancoDeDados.Service
 {
@@ -68,7 +67,7 @@ namespace Escola_ExercicioBancoDeDados.Service
             return curso;
         }
 
-        /*public Curso UpdateCurso(CursoDTO cursoDTO, Guid id)
+        public Curso UpdateCurso(CursoDTO cursoDTO, Guid id)
         {
             // Busca das matérias
             List<Materia> materias = new List<Materia>();
@@ -85,18 +84,12 @@ namespace Escola_ExercicioBancoDeDados.Service
             {
                 using var conn = new OracleConnection(ConnectionStting);
                 conn.Open();
-                // Create a local transaction
+                // Cria uma transacao local
                 OracleTransaction transaction = conn.BeginTransaction();
-                var command = new OracleCommand(@"INSERT INTO APPACADEMY.CURSO
-                                            (NOME, ID)
-                                            VALUES(:Nome, :Id)", conn);
-                command.Transaction = transaction;
-                _repository.Update(curso, command);
-                var command2 = new OracleCommand(@"INSERT INTO APPACADEMY.MATERIA_CURSO
-                                            (ID, MATERIA_ID, CURSO_ID)
-                                            VALUES(:Id, :Materia_id, :Curso_id)", conn);
-                command2.Transaction = transaction;
-                _materiaCursoRepository.Update(curso, command2);
+   
+                _repository.Update(curso, transaction);
+
+                _materiaCursoRepository.Delete(curso, transaction);
                 transaction.Commit();
             }
             catch (Exception)
@@ -104,7 +97,7 @@ namespace Escola_ExercicioBancoDeDados.Service
                 throw new Exception("Não foi possível atualizar o curso");
             }
             return curso;
-        }*/
+        }
 
         public IEnumerable<Curso> GetCursos(CursoQuery cursoQuery)
         {

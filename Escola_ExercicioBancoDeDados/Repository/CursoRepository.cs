@@ -273,6 +273,25 @@ namespace Escola_ExercicioBancoDeDados.Repository
             }
         }
 
+        public void Update(Curso curso, OracleTransaction transaction)
+        {
+            try
+            {
+                using var cmd = new OracleCommand(@"UPDATE APPACADEMY.CURSO
+                                                 SET NOME = :NOME
+                                                 WHERE ID = :ID", transaction.Connection);
+                cmd.Transaction = transaction;
+                cmd.Parameters.Add("NOME", curso.Nome);
+                cmd.Parameters.Add("ID", curso.Id.ToString());
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public int Delete(Guid id)
         {
             try

@@ -31,6 +31,22 @@ namespace Escola_ExercicioBancoDeDados.Controllers
                 return BadRequest(new ExceptionResult { Message = ex.Message});
             }
         }
+
+        [HttpPut, Route("{id}")]
+        public IActionResult Post(CursoDTO curso, Guid id)
+        {
+            curso.Validar();
+            if (!curso.Valido) return BadRequest(curso.GetErrors());
+            try
+            {
+                return Ok(_service.UpdateCurso(curso, id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResult { Message = ex.Message });
+            }
+        }
+
         [HttpGet]
         public IActionResult Get([FromQuery]CursoQuery cursoQuery)
         {
