@@ -1,5 +1,4 @@
 ﻿using Dominio;
-using Escola_ExercicioBancoDeDados.DTO;
 using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
 using Escola_ExercicioBancoDeDados.DTO.Result;
 using Escola_ExercicioBancoDeDados.Service;

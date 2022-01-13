@@ -1,3 +1,4 @@
+using Dapper;
 using Dominio;
 using Dominio.IRepository.Dapper;
 using EFContext;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,6 +48,10 @@ namespace Escola_ExercicioBancoDeDados
                 opt.MigrationsAssembly(typeof(EFContext.AppContext).Assembly.GetName().Name);
             });
     });
+            SqlMapper.AddTypeHandler(new OracleGuidTypeHandler());
+            SqlMapper.RemoveTypeMap(typeof(Guid));
+            SqlMapper.RemoveTypeMap(typeof(Guid?));
+
             services.AddScoped<IUnityOfWork, UnityOfWork>();
 
             services.AddSingleton<IAlunoRepositoryDapper, DapperContext.Repository.AlunoRepository>();
@@ -84,6 +90,18 @@ namespace Escola_ExercicioBancoDeDados
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+    public class OracleGuidTypeHandler : SqlMapper.TypeHandler<Guid>
+    {
+        public override void SetValue(IDbDataParameter parameter, Guid guid)
+        {
+            parameter.Value = guid.ToString();
+        }
+
+        public override Guid Parse(object value)
+        {
+            return new Guid((string)value);
         }
     }
 }

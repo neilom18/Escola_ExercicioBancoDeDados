@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Escola_ExercicioBancoDeDados.Endity
+namespace Dominio.Endity
 {
     public class Professor : Base 
     {
         public Professor(Guid id) : base(id){}
-        public Professor(string nome, int idade)
+        public Professor(string nome, int idade) : base()
         {
             Nome = nome;
             Idade = idade;
@@ -17,9 +17,6 @@ namespace Escola_ExercicioBancoDeDados.Endity
             Nome = nome;
             Idade = idade;
         }
-
-        public List<Turma> Turma { get; private set; }
-        public List<Materia> Materia { get; set; }
         public string Nome { get; private set; }
         public int Idade { get; private set; }
     }

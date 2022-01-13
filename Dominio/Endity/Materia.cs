@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Escola_ExercicioBancoDeDados.Endity
+namespace Dominio.Endity
 {
     public class Materia : Base
     {
@@ -15,25 +15,16 @@ namespace Escola_ExercicioBancoDeDados.Endity
             Nome = nome;
             Descricao = descricao;
         }
-
-        public Materia(string nome, string descricao, Professor professor)
+        public Materia(string nome, string descricao, Guid professor_id, Guid id) : base(id)
         {
             Nome = nome;
             Descricao = descricao;
-            Professor = professor;
-        }
-
-        public Materia(string nome, string descricao, Professor professor, Guid id) : base(id)
-        {
-            Nome = nome;
-            Descricao = descricao;
-            Professor = professor;
+            Professor_id = professor_id;
         }
 
         public string Nome { get; private set; }
         public string Descricao { get;private set; }
-        public Professor Professor { get; private set; }
+        public Guid Professor_id { get; private set; }
 
-        public void SetProfessor(Professor professor) => Professor = professor;
     }
 }

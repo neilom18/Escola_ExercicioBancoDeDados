@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Escola_ExercicioBancoDeDados.Endity
+namespace Dominio.Endity
 {
     public class Base
     {
@@ -12,6 +12,10 @@ namespace Escola_ExercicioBancoDeDados.Endity
         public Base(Guid id)
         {
             Id = id;
+        }
+        public Base(string id)
+        {
+            Id = Guid.Parse(id);
         }
     }
 }

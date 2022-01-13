@@ -9,5 +9,6 @@ namespace Dominio.IRepository.Dapper
 {
     public interface ITurmaRepositoryDapper : IBaseRepositoryDapper<Turma>
     {
+        public IEnumerable<Aluno> GetAlunos(Guid id);
     }
 }
