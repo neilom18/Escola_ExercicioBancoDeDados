@@ -1,5 +1,5 @@
-﻿using Escola_ExercicioBancoDeDados.DTO;
-using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
+using Escola_ExercicioBancoDeDados.DTO;
 using Escola_ExercicioBancoDeDados.Repository;
 using System;
 

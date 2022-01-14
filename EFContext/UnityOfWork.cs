@@ -9,7 +9,7 @@ namespace EFContext
     public class UnityOfWork : IUnityOfWork
     {
         private bool _disposedValue;
-        private readonly AppContext _appContext;
+        private readonly Context _appContext;
 
         public IAlunoRepositoryEF AlunoRepositoryEF { get; set; }
         public IProfessorRepositoryEF ProfessorRepositoryEF { get; set; }
@@ -17,7 +17,7 @@ namespace EFContext
         public ICursoRepositoryEF CursoRepositoryEF { get; set; }
         public ITurmaRepositoryEF TurmaRepositoryEF { get; set; }
 
-        public UnityOfWork(AppContext appContext)
+        public UnityOfWork(Context appContext)
         {
             _appContext = appContext;
 

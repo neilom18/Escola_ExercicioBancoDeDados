@@ -1,5 +1,5 @@
-﻿using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
-using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
+using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

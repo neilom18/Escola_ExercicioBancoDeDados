@@ -1,4 +1,4 @@
-﻿using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;

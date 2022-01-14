@@ -1,5 +1,5 @@
-﻿using Dominio.IRepository.EF;
-using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
+using Dominio.IRepository.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace EFContext.Repository
 {
     public class BaseRepository<TEntity> : IBaseRepositoryEF<TEntity> where TEntity : Base
     {
-        private readonly AppContext _context;
+        private readonly Context _context;
 
-        public BaseRepository(AppContext context)
+        public BaseRepository(Context context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

@@ -6,7 +6,7 @@ namespace Dominio.Endity
     public class Professor : Base 
     {
         public Professor(Guid id) : base(id){}
-        public Professor(string nome, int idade) : base()
+        public Professor(string nome, int idade)
         {
             Nome = nome;
             Idade = idade;

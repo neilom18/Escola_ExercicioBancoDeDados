@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Dominio.Endity
 {
@@ -15,16 +16,26 @@ namespace Dominio.Endity
             Nome = nome;
             Descricao = descricao;
         }
-        public Materia(string nome, string descricao, Guid professor_id, Guid id) : base(id)
+
+        public Materia(string nome, string descricao, Professor professor)
         {
             Nome = nome;
             Descricao = descricao;
-            Professor_id = professor_id;
+            Professor = professor;
+        }
+
+        public Materia(string nome, string descricao, Professor professor, Guid id) : base(id)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Professor = professor;
         }
 
         public string Nome { get; private set; }
         public string Descricao { get;private set; }
-        public Guid Professor_id { get; private set; }
-
+        public Professor Professor { get; private set; }
+        public List<Aluno> Alunos { get; private set; }
+        public List<Curso> Cursos { get; private set; }
+        public void SetProfessor(Professor professor) => Professor = professor;
     }
 }

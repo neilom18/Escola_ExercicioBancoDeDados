@@ -1,5 +1,5 @@
-﻿using Dominio.IRepository.EF;
-using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
+using Dominio.IRepository.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace EFContext.Repository
 {
     public class MateriaRepository : BaseRepository<Materia>, IMateriaRepositoryEF
     {
-        public MateriaRepository(AppContext context) : base(context)
+        public MateriaRepository(Context context) : base(context)
         {
         }
     }

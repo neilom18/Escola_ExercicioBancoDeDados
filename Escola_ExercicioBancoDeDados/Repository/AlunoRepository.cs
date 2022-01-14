@@ -1,11 +1,11 @@
 ﻿using Escola_ExercicioBancoDeDados.DTO.QueryParametes;
-using Escola_ExercicioBancoDeDados.Endity;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using Dominio.Endity;
 
 namespace Escola_ExercicioBancoDeDados.Repository
 {

@@ -1,5 +1,5 @@
-﻿using Escola_ExercicioBancoDeDados.DTO.QueryParameters;
-using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
+using Escola_ExercicioBancoDeDados.DTO.QueryParameters;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using System;

@@ -1,5 +1,4 @@
 ﻿using Dominio.Endity;
-using Escola_ExercicioBancoDeDados.Endity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -16,11 +15,18 @@ namespace EFContext
         {
             builder.ToTable("Alunos");
             builder.Property(p => p.Nome)
-                .HasMaxLength(60)
-                .IsRequired(true);
+                .HasColumnType("varchar2(60)")
+                .IsRequired();
+
             builder.Property(p => p.Idade)
-                .HasColumnType("UInt16")
-                .IsRequired(true);
+                .HasColumnType("smallint")
+                .IsRequired();
+            
+            builder.HasOne(p => p.Turma)
+                .WithMany(b => b.Alunos)
+                .HasForeignKey("turma_id");
+
+            builder.Property(p => p.Id).HasColumnType("varchar2(36)");
         }
     }
 }

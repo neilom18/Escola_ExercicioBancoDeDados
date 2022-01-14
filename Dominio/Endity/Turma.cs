@@ -5,14 +5,25 @@ namespace Dominio.Endity
 {
     public class Turma : Base
     {
-        public Guid Curso_id { get; set; }
-        public Turma(Guid curso_id) : base()
+        public Turma(){}
+        public Turma(Curso curso, Guid id) : base(id)
         {
-            Curso_id = curso_id;
+            Curso = curso;
+            Alunos = new List<Aluno>();
         }
-        public Turma(Guid curso_id, Guid id) : base(id)
+        public Turma(Curso curso, List<Aluno> alunos, Guid id): base (id)
         {
-            Curso_id = curso_id;
+            Curso = curso;
+            Alunos = alunos;
         }
+
+        public Turma(Curso curso)
+        {
+            Curso = curso;
+            Alunos = new List<Aluno>();
+        }
+
+        public Curso Curso { get; private set; }
+        public List<Aluno> Alunos { get; private set; }
     }
 }

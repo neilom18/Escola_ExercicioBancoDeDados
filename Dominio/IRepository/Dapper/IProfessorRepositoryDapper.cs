@@ -1,4 +1,4 @@
-﻿using Escola_ExercicioBancoDeDados.Endity;
+﻿using Dominio.Endity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

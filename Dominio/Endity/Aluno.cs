@@ -9,16 +9,45 @@ namespace Dominio.Endity
         {
             Nome = nome;
             Idade = idade;
+            Materias = new List<Materia>();
         }
-        public Aluno(string nome, int idade, Guid turma_id, Guid id) : base(id)
+
+        public Aluno(string nome, int idade, string id) : base(id)
         {
             Nome = nome;
             Idade = idade;
-            Turma_id = turma_id;
+            Materias = new List<Materia>();
         }
+
+        public Aluno(Turma turma, string nome, int idade)
+        {
+            Turma = turma;
+            Nome = nome;
+            Idade = idade;
+            Materias = new List<Materia>();
+        }
+
+        public Aluno(Turma turma, string nome, int idade, Guid id) : base(id)
+        {
+            Turma = turma;
+            Nome = nome;
+            Idade = idade;
+            Materias = new List<Materia>();
+        }
+
+        public Aluno( Turma turma, List<Materia> materias, string nome, int idade)
+        {
+            Turma = turma;
+            Materias = materias;
+            Nome = nome;
+            Idade = idade;
+        }
+
+        public Turma Turma { get;private set; } // Turma
+        public List<Materia> Materias { get;private set; }
         public string Nome { get;private set; }
         public int Idade { get;private set; }
-        public Guid Turma_id { get; private set; }
 
+        public void SetMaterias(List<Materia> materias) => Materias = materias;
     }
 }

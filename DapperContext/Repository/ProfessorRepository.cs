@@ -1,6 +1,6 @@
 ﻿using Dapper;
+using Dominio.Endity;
 using Dominio.IRepository.Dapper;
-using Escola_ExercicioBancoDeDados.Endity;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

@@ -13,7 +13,8 @@ namespace EFContext
     {
         public void Configure(EntityTypeBuilder<Base> builder)
         {
-            builder.HasKey(prop => prop.Id);
+            builder.Property(x => x.Id).HasColumnType("varchar2(36)"); 
+            builder.HasKey(x => x.Id);
         }
     }
 }

@@ -1,9 +1,9 @@
 using Dapper;
 using Dominio;
 using Dominio.IRepository.Dapper;
+using Dominio.IRepository.EF;
 using EFContext;
 using Escola_ExercicioBancoDeDados.Controllers;
-using Escola_ExercicioBancoDeDados.Endity;
 using Escola_ExercicioBancoDeDados.Repository;
 using Escola_ExercicioBancoDeDados.Service;
 using Microsoft.AspNetCore.Builder;
@@ -39,13 +39,13 @@ namespace Escola_ExercicioBancoDeDados
             var connectionString = Configuration.GetConnectionString("AppAcademy");
 
             services.AddControllers();
-            services.AddDbContext<EFContext.AppContext>(
+            services.AddDbContext<EFContext.Context>(
     configuration =>
     {
         configuration.UseOracle(connectionString,
             opt =>
             {
-                opt.MigrationsAssembly(typeof(EFContext.AppContext).Assembly.GetName().Name);
+                opt.MigrationsAssembly("Escola_ExercicioBancoDeDados");
             });
     });
             SqlMapper.AddTypeHandler(new OracleGuidTypeHandler());
@@ -55,6 +55,7 @@ namespace Escola_ExercicioBancoDeDados
             services.AddScoped<IUnityOfWork, UnityOfWork>();
 
             services.AddSingleton<IAlunoRepositoryDapper, DapperContext.Repository.AlunoRepository>();
+            services.AddSingleton<IAlunoRepositoryEF, EFContext.Repository.AlunoRepository>();
 
             services.AddTransient<AlunoService>();
             /*services.AddTransient<CursoService>();
